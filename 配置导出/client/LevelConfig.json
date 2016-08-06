@@ -1,0 +1,62 @@
+[
+    {
+        "dayRatio": 200, 
+        "rankOrDay": 1, 
+        "rankRatio": 200
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 2, 
+        "rankRatio": 180
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 3, 
+        "rankRatio": 150
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 4, 
+        "rankRatio": 120
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 5, 
+        "rankRatio": 120
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 6, 
+        "rankRatio": 120
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 7, 
+        "rankRatio": 120
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 8, 
+        "rankRatio": 120
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 9, 
+        "rankRatio": 100
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 10, 
+        "rankRatio": 100
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 11, 
+        "rankRatio": 100
+    }, 
+    {
+        "dayRatio": 0, 
+        "rankOrDay": 12, 
+        "rankRatio": 100
+    }
+]
