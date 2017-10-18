@@ -1,6 +1,16 @@
 #coding:utf8
 #导出地图数据为服务器可用的json形式
+'''
+使用说明：
+UNity的 AstarPath find 插件 导出grid 网格地图 为 zip格式
+解压缩得到：
+graph0_extra.binary
 
+
+graph0.json
+	unclampedSize 地图网格数量
+
+'''
 import os
 import struct
 import math 
@@ -15,11 +25,15 @@ def toShort(byte):
 
 
 
-def readNodeData(gid, graph, width, height, jcon):
+def readNodeData(gid, graph, width, height, jcon, nodeSize):
 	length = toInt(graph[:4])
+	eachNodeSize = (len(graph)-4)/length
 	print "node length ", length, length*8+4, len(graph)
-	print "eachNode size", (len(graph)-4)/length
+	print "eachNode size", eachNodeSize
 	print 'width * height', length, width, height, width*height
+	width = round(width/nodeSize)
+	height = round(height/nodeSize)
+	print "CellNum W, H:", width, height, width * height * eachNodeSize + 4
 
 	start = 4
 	mapdata = []
@@ -44,8 +58,9 @@ def readNodeData(gid, graph, width, height, jcon):
 			
 		#mapdata.append([x/1000.0, y/1000.0, z/1000.0, flag&0x1])
 		mapHeight.append(y/1000.0)
+		#mapHeight.append(y)
 		walk = 1-flag&0x1
-		mapdata.append(str(walk))
+		mapdata.append(walk)
 		
 		if i % width == 0:
 			readMap += '\n'
@@ -55,12 +70,13 @@ def readNodeData(gid, graph, width, height, jcon):
 			else:
 				readMap += '0'  	
 	
-	mapdata = ','.join(mapdata)
+	#mapdata = ','.join(mapdata)
 	out = {"id":gid, "width":width, "height":height, 
             "center":jcon["center"], 
             #"playerStart":playerStart["playerStart"], 
             "mapHeight":mapHeight, "mapdata":mapdata, 
             'changePoint':[],
+            "nodeSize" : nodeSize,
     }
 	return out, readMap
 
@@ -74,10 +90,11 @@ def exportMapData(dir):
 	mapId = int(dir)
 	fullDir = os.path.join('rawMapData', dir)
 	p1 = os.path.join(fullDir, "graph0_extra.binary")
+	#p1 = os.path.join(fullDir, "graph.bytes")
 	p2 = os.path.join(fullDir, "graph0.json")
-	fn = os.path.join(fullDir, "playerStart"+str(mapId)+".json")
-	co = open(fn).read()
-	playerStart = json.loads(co)
+	#fn = os.path.join(fullDir, "playerStart"+str(mapId)+".json")
+	#co = open(fn).read()
+	#playerStart = json.loads(co)
 
 	#地图上每个点的信息 是否可以通过
 	graph = open(p1, 'rb').read()
@@ -86,19 +103,20 @@ def exportMapData(dir):
 	jcon = json.loads(open(p2).read())
 
 	
-	
+	nodeSize = jcon["nodeSize"]
+	print "nodeSize", nodeSize
 	unclampedSize = jcon["unclampedSize"]
 	print 'mapSize', unclampedSize
 	#print jcon
 	width = unclampedSize["x"]
 	height = unclampedSize["y"]
 
-	out, readMap = readNodeData(mapId, graph, width, height, jcon)
-	out.update(playerStart)
+	out, readMap = readNodeData(mapId, graph, width, height, jcon, nodeSize)
+	#out.update(playerStart)
 	
 	res = json.dumps([out])
 	#供服务器使用的数据
-	f = open(os.path.join(fullDir, "MapSourceConfig.xml"), 'w')
+	f = open(os.path.join(fullDir, "MapSourceConfig.json"), 'w')
 	f.write(res)
 	f.close()
 
@@ -116,11 +134,12 @@ for d in allMap:
 	if os.path.isdir(name):
 		allList.append(exportMapData(d))
 
-path = u'地图'
-fullPath = os.path.join(path, "MapSourceConfig.xml")
+path = u'Export'
+fullPath = os.path.join(path, "MapSourceConfig.json")
 #.encode('gbk')
 
-wout = json.dumps(allList)
+wout = json.dumps(allList, sort_keys=True,
+indent=4, separators=(',', ': '))
 f = open(fullPath, 'w')
 f.write(wout)
 f.close()
