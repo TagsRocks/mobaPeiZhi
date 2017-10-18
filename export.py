@@ -114,11 +114,11 @@ def handleSheet(sheet):
 	dataObj = ''
 	objList = ''
 	
-	print sheet.name
+	print sheet.name.encode(encodeType)
 	
 	nrows = sheet.nrows
 	ncols = sheet.ncols
-	print nrows, ncols
+	#print nrows, ncols
 	if nrows == 0 or ncols == 0:
 		return
 		
@@ -207,8 +207,7 @@ def handleSheet(sheet):
 					argList += str(line[key])+", "	
 				elif typeRow[j] == "Boolean":
 					try:
-						print "curRow", curRow[j]
-						
+						#print "curRow", curRow[j]
 						if curRow[j] == 'true' or curRow[j] == 'TRUE' or  curRow[j] == 1:
 							line[key] = True
 						else:
@@ -270,7 +269,7 @@ def handleSheet(sheet):
 
 def main():		
 	for i in f:
-		print "Read File", i
+		print "Read File", i.encode(encodeType)
 		if i.find(".xls") == -1 or i.find('$') != -1 or i.find('#') != -1:
 			continue
 			
@@ -315,11 +314,10 @@ os.system(buildCmd)
 os.chdir('../..')
 
 	
-'''
 print '开始复制到U3D 目录'
 #U3D = '/Users/liyong/Desktop/allUnity/Assets/Plugins/'
 #U3D2 = '/Users/liyong/Desktop/tank/Assets/Plugins/'
-U3D = u'../trunk/Assets/Plugins/'
+U3D = u'../smallGameClient/Assets/Plugins/'
 print U3D.encode(encodeType)
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (U3D)
 ep = epath.encode(encodeType)
@@ -328,16 +326,15 @@ os.system(ep)
 #os.system('cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (U3D2))
 	
 
-Server = u'../trunk/SocketServer1/packages'
+Server = u'../tankServer/packages'
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (Server)
 ep = epath.encode(encodeType)
 os.system(ep)
 
-Server = u'../trunk/SocketServer1/SocketServer/bin/Debug'
+Server = u'../tankServer/SocketServer/bin/Debug'
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (Server)
 ep = epath.encode(encodeType)
 os.system(ep)
-'''
 	
 
 	
