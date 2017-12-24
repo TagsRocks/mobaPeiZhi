@@ -10,15 +10,24 @@ graph0_extra.binary
 graph0.json
 	unclampedSize 地图网格数量
 
+id 3 碰撞墙壁数据
+id 5 草丛数据
 '''
 import os
 import struct
 import math 
 import json
 import codecs
+import sys
+
+print 'platform', sys.platform
+platname = sys.platform
+encodeType = 'gbk'
+if platname == 'darwin':
+    encodeType = 'utf8'
 
 def toInt(byte):
-	return struct.unpack('@I', byte)[0]
+	return struct.unpack('@i', byte)[0]
 
 def toShort(byte):
 	return struct.unpack('@H', byte)[0]	
@@ -144,4 +153,23 @@ f = open(fullPath, 'w')
 f.write(wout)
 f.close()
 
+
+print '开始复制到U3D目录 Resources/Config 和服务器目录 ConfigData'
+#U3D = '/Users/liyong/Desktop/allUnity/Assets/Plugins/'
+#U3D2 = '/Users/liyong/Desktop/tank/Assets/Plugins/'
+U3D = u'../../smallGameClient/Assets/Resources/Config'
+print U3D.encode(encodeType)
+epath = u'cp Export/MapSourceConfig.json %s ' % (U3D)
+ep = epath.encode(encodeType)
+#ep = epath.encode('utf8')
+os.system(ep)
+#os.system('cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (U3D2))
+	
+
+Server = u'../../tankServer/SocketServer/ConfigData'
+epath = u'cp Export/MapSourceConfig.json %s ' % (Server)
+ep = epath.encode(encodeType)
+os.system(ep)
+
+	
 
