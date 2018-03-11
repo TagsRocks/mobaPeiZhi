@@ -4,7 +4,8 @@ import sys
 import xlrd
 import json
 import shutil
-print 'platform', sys.platform
+
+print ('platform', sys.platform)
 platname = sys.platform
 encodeType = 'gbk'
 if platname == 'darwin':
@@ -91,7 +92,7 @@ else:
     gbk = c.encode('gbk')
 
 if os.path.exists(gbk):
-	print 'gbk exist'
+	print ('gbk exist')
 	shutil.rmtree(gbk)
 
 os.mkdir(gbk)
@@ -114,7 +115,7 @@ def handleSheet(sheet):
 	dataObj = ''
 	objList = ''
 	
-	print sheet.name.encode(encodeType)
+	print (sheet.name.encode(encodeType))
 	
 	nrows = sheet.nrows
 	ncols = sheet.ncols
@@ -225,7 +226,7 @@ def handleSheet(sheet):
 						else:
 							line[key] = str(curRow[j])
 					except Exception as e:
-						print "error", e
+						print ("error", e)
 						line[key] = ""
 					#print "line", line[key]
 					argList += "\""+line[key].replace('"', '\\"')+"\", "
@@ -246,7 +247,7 @@ def handleSheet(sheet):
 	if fileName != "":
 		c = os.path.join(u"配置导出", "client")
 		outF = os.path.join(c, fileName+".json").encode(encodeType)
-		print outF
+		print (outF)
 		nf = open(outF, "w")
 		nf.write(res)
 		nf.close()
@@ -260,7 +261,7 @@ def handleSheet(sheet):
 		#os.mkdirs(gbk)
 
 		outF = os.path.join(c, fileName+".cs").encode(encodeType)
-		print outF
+		print (outF)
 		nf = open(outF, "w")
 		outCon = fileTemplate % (cl, dataDeclare)
 		nf.write('\xef\xbb\xbf'+outCon.encode('utf8'))
@@ -269,7 +270,7 @@ def handleSheet(sheet):
 
 def main():		
 	for i in f:
-		print "Read File", i.encode(encodeType)
+		print ("Read File", i.encode(encodeType))
 		if i.find(".xls") == -1 or i.find('$') != -1 or i.find('#') != -1:
 			continue
 			
@@ -283,12 +284,12 @@ def main():
 	
 main()		
 	
-print "generate CharAttribute"
+print ("generate CharAttribute")
 path = u'提供'
 os.chdir(path)
 #cmd = os.path.join(path, "handleProperty.py").encode('gbk')
 cmd = "python %s" % ("handleProperty.py")
-print cmd
+print (cmd)
 os.system(cmd)	 
 os.chdir('..')
 
@@ -314,7 +315,7 @@ os.system(buildCmd)
 os.chdir('../..')
 
 	
-print '开始复制到U3D 目录'
+print ('开始复制到U3D 目录')
 #U3D = '/Users/liyong/Desktop/allUnity/Assets/Plugins/'
 #U3D2 = '/Users/liyong/Desktop/tank/Assets/Plugins/'
 U3D = u'../smallGameClient/Assets/Plugins/'
@@ -322,6 +323,7 @@ print U3D.encode(encodeType)
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (U3D)
 ep = epath.encode(encodeType)
 #ep = epath.encode('utf8')
+print("CopyToDir", ep)
 os.system(ep)
 #os.system('cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (U3D2))
 	
@@ -329,11 +331,14 @@ os.system(ep)
 Server = u'../tankServer/packages'
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (Server)
 ep = epath.encode(encodeType)
+
+print("CopyToDir", ep)
 os.system(ep)
 
 Server = u'../tankServer/SocketServer/bin/Debug'
 epath = u'cp 配置导出/csCode/obj/Debug/configDll.dll %s ' % (Server)
 ep = epath.encode(encodeType)
+print("CopyToDir", ep)
 os.system(ep)
 	
 
